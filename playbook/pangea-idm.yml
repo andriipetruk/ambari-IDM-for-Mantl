@@ -1,0 +1,7 @@
+
+- hosts: mantl-01-control-01
+  gather_facts: yes
+  roles:
+    - knox
+    - ambari-pangea
+

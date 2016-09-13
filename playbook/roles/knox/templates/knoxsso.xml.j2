@@ -1,0 +1,55 @@
+<topology>
+    <gateway>
+      <provider>
+          <role>federation</role>
+          <name>pac4j</name>
+          <enabled>true</enabled>
+          <param>
+            <name>pac4j.callbackUrl</name>
+            <value>https:/{{ knox_host }}:{{ gateway_port }}/gateway/knoxsso/api/v1/websso</value>
+          </param>
+          <param>
+            <name>clientName</name>
+            <value>SAML2Client</value>
+          </param>
+          <param>
+            <name>saml.identityProviderMetadataPath</name>
+            <value>http://{{ mantl_host }}:8082/openam/saml2/jsp/exportmetadata.jsp</value>
+          </param>
+          <param>
+            <name>saml.serviceProviderMetadataPath</name>
+            <value>/tmp/sp-metadata.xml</value>
+          </param>
+          <param>
+            <name>saml.serviceProviderEntityId</name>
+            <value>https://{{ knox_host }}:{{ gateway_port }}/gateway/knoxsso/api/v1/websso?pac4jCallback=true&amp;client_name=SAML2Client</value>
+          </param>
+      </provider>
+      <provider>
+          <role>identity-assertion</role>
+          <name>Default</name>
+          <enabled>true</enabled>
+          <param>
+            <name>principal.mapping</name>
+            <value>guest@example.com=guest;</value>
+          </param>
+      </provider>
+    </gateway>
+    <service>
+        <role>KNOXSSO</role>
+        <param>
+          <name>knoxsso.cookie.secure.only</name>
+          <value>false</value>
+       </param>
+       <param>
+         <name>knoxsso.token.ttl</name>
+         <value>100000</value>
+       </param>
+       <param>
+          <name>knoxsso.redirect.whitelist.regex</name>
+          <value>^https?:\/\/(mantlkn01\.cisco\.com|localhost|127\.0\.0\.1|0:0:0:0:0:0:0:1|::1):[0-9].*$</value>
+       </param>
+    </service>
+</topology>
+
+

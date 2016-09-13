@@ -1,0 +1,12 @@
+mantl_knox_image: andriipetruk/mantl-knox 
+mantl_knox_image_tag: v0.1.1
+import_cert: /etc/pki/mantl/cert
+import_key: /etc/pki/mantl/key
+pkcs12: /etc/pki/host.p12
+keystore: /etc/pki/keystore
+keystore_pass: df34s234A
+knox_cfg_dir: /etc/knox
+knox_host:  mantlkn01.cisco.com
+mantl_host: mantlam01.cisco.com
+gateway_password: SVJ4dTc3M2M5Zzg9OjpMTytxRzRyTmZMc3hzaytVL0k5ZEVnPT06OkMzVTQxNkZueUdCNnZvUTBaQThhTkE9PQ==
+gateway_port: 8843

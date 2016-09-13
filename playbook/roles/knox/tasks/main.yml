@@ -1,0 +1,37 @@
+---
+- name: ensure mantl-knox docker image is present
+  sudo: yes
+  command: /usr/bin/docker pull {{ mantl_knox_image }}:{{ mantl_knox_image_tag }}
+
+- name: create knox topology config directory
+  sudo: yes
+  file:
+    dest: "{{ knox_cfg_dir }}"
+    state: directory
+
+- name: configure mantl-knox
+  sudo: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: mantl-knox.service.j2
+      dest: /usr/lib/systemd/system/mantl-knox.service
+    - src: mantl-knox.env.j2
+      dest: /etc/default/mantl-knox.env
+    - src: knoxsso.xml.j2
+      dest: /etc/knox/knoxsso.xml
+  notify:
+    - reload mantl-knox
+    - restart mantl-knox
+
+- name: enable mantl-knox
+  sudo: yes
+  service:
+    name: mantl-knox
+    enabled: yes
+    state: started
+  notify:
+    - restart mantl-knox
+
+

@@ -1,0 +1,9 @@
+- name: restart mantl-knox
+  sudo: yes
+  service:
+    name: mantl-knox
+    state: restarted
+
+- name: reload mantl-knox
+  sudo: yes
+  command: systemctl daemon-reload

@@ -1,0 +1,9 @@
+- name: restart ambari-pangea
+  sudo: yes
+  service:
+    name: ambari-pangea
+    state: restarted
+
+- name: reload ambari-pangea
+  sudo: yes
+  command: systemctl daemon-reload

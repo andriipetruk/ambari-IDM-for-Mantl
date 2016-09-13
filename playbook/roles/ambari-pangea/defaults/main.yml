@@ -1,0 +1,3 @@
+ambari_pangea_image: andriipetruk/ambari-pangea
+ambari_pangea_image_tag: 0.1.0
+sso_url:  mantlkn01.cisco.com

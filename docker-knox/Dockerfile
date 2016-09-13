@@ -18,6 +18,9 @@ RUN yum install -y unzip
 RUN mkdir /tmp/knox
 RUN cd /tmp/knox && curl -o knox-0.9.1.zip http://www-us.apache.org/dist/knox/0.9.1/knox-0.9.1.zip 
 RUN cd /tmp/knox && unzip -x knox-0.9.1.zip && mv knox-0.9.1 /opt/knox
+RUN useradd -c 'Knox user' -m -d /opt/knox -s /bin/bash knox
+RUN chown -R knox.knox /opt/knox
+RUN mv /opt/knox/conf/topologies /opt/knox/conf/topologies.org
 
 # set knox gateway home, add to path
 ENV GATEWAY_HOME /opt/knox
@@ -28,4 +31,4 @@ ADD bootstrap-knox.sh /etc/bootstrap-knox.sh
 RUN chown root:root /etc/bootstrap-knox.sh
 RUN chmod 700 /etc/bootstrap-knox.sh
 
-CMD ["/etc/bootstrap-knox.sh", "-bash"]
+CMD ["/etc/bootstrap-knox.sh", "-d"]

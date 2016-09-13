@@ -1,0 +1,33 @@
+[Unit]
+Description=mantl-knox
+After=docker.service
+After=consul.service
+Requires=docker.service
+Requires=consul.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+
+ExecStartPre=-/usr/bin/docker rm -f mantl-knox
+ExecStartPre=-/usr/bin/docker pull {{ mantl_knox_image }}:{{ mantl_knox_image_tag }}
+
+ExecStart=/usr/bin/docker run \
+    --rm \
+    --name=mantl-knox \
+    -p {{ gateway_port }}:{{ gateway_port}} \
+    --add-host mantlctr01.cisco.com:10.10.0.2 \
+    --add-host mantlctr02.cisco.com:10.10.0.4 \
+    --add-host mantlam01.cisco.com:10.10.0.2 \
+    --add-host mantlam02.cisco.com:10.10.0.4 \
+    --add-host mantledge01.cisco.com:10.10.0.8 \
+    --add-host mantlkn01.cisco.com:10.10.0.2 \
+    -v /etc/knox:/opt/knox/conf/topologies \
+    --env-file=/etc/default/mantl-knox.env \
+    {{ mantl_knox_image }}:{{ mantl_knox_image_tag }}
+
+ExecStop=/usr/bin/docker kill mantl-knox
+
+[Install]
+WantedBy=multi-user.target

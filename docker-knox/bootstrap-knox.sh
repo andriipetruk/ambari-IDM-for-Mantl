@@ -3,18 +3,17 @@
 
 # knox bootstrap
 
-mkdir -p /var/log/knox
-java -jar $GATEWAY_HOME/bin/ldap.jar $GATEWAY_HOME/conf &>/var/log/knox/ldap.out &
+
 
 cd $GATEWAY_HOME
-mkdir -p conf/security
-echo '#1.0#' > conf/security/master
-
-# Make sure to read and understand the "Persisting the Master Secret" paragraph : http://knox.incubator.apache.org/books/knox-0-3-0/knox-0-3-0.html
-# This is a test/development container - change this in production
-echo 'UjFkVDZNS0N5Yzg9Ojp1WVNwREtFeG9KcHN1QjFYU1JDRkh3PT06OldTaUdOT1U5RUw0ejZ5SUM0VE5LMVE9PQ==' >> conf/security/master
-bin/gateway.sh setup root
-bin/gateway.sh start
+sed s/8443/$GATEWAY_PORT/ -i conf/gateway-site.xml 
+mkdir -p data/security
+echo '#1.0#' > data/security/master
+echo $GATEWAY_PASSWORD >> data/security/master
+chown -R knox.knox $GATEWAY_HOME
+#su knox -c "java -jar $GATEWAY_HOME/bin/ldap.jar $GATEWAY_HOME/conf"
+su knox -c "bin/gateway.sh setup"
+su knox -c "bin/gateway.sh start"
 
 
 

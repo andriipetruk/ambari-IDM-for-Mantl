@@ -1,0 +1,29 @@
+---
+- name: ensure ambari-pangea docker image is present
+  sudo: yes
+  command: /usr/bin/docker pull {{ ambari_pangea_image }}:{{ ambari_pangea_image_tag }}
+
+- name: configure ambari-pangea
+  sudo: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: ambari-pangea.service.j2
+      dest: /usr/lib/systemd/system/ambari-pangea.service
+    - src: ambari-pangea.env.j2
+      dest: /etc/default/ambari-pangea.env
+  notify:
+    - reload ambari-pangea
+    - restart ambari-pangea
+
+- name: enable ambari-pangea
+  sudo: yes
+  service:
+    name: ambari-pangea
+    enabled: yes
+    state: started
+  notify:
+    - restart ambari-pangea
+
+
