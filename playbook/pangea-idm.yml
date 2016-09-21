@@ -4,4 +4,5 @@
   roles:
     - knox
     - ambari-pangea
+    - shibboleth
 

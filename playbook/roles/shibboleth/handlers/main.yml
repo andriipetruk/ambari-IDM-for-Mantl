@@ -1,0 +1,9 @@
+- name: restart mantl-shibboleth
+  sudo: yes
+  service:
+    name: mantl-shibboleth
+    state: restarted
+
+- name: reload mantl-shibboleth
+  sudo: yes
+  command: systemctl daemon-reload

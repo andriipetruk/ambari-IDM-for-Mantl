@@ -1,0 +1,10 @@
+mantl_shibboleth_image: andriipetruk/mantl-shibboleth 
+mantl_shibboleth_image_tag: v0.1.0
+import_cert: /etc/pki/mantl/cert
+import_key: /etc/pki/mantl/key
+pkcs12: /etc/pki/host.p12
+keystore: /etc/pki/keystore
+keystore_pass: df34s234A
+knox_cfg_dir: /etc/knox
+knox_host:  mantlkn01.cisco.com
+mantl_host: mantlam01.cisco.com

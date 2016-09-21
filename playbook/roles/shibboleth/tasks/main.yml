@@ -1,0 +1,35 @@
+---
+- name: ensure mantl-shibboleth docker image is present
+  sudo: yes
+  command: /usr/bin/docker pull {{ mantl_shibboleth_image }}:{{ mantl_shibboleth_image_tag }}
+
+
+
+
+
+
+
+- name: configure mantl-shibboleth
+  sudo: yes
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: mantl-shibboleth.service.j2
+      dest: /usr/lib/systemd/system/mantl-shibboleth.service
+    - src: mantl-shibboleth.env.j2
+      dest: /etc/default/mantl-shibboleth.env
+  notify:
+    - reload mantl-shibboleth
+    - restart mantl-shibboleth
+
+- name: enable mantl-shibboleth
+  sudo: yes
+  service:
+    name: mantl-shibboleth
+    enabled: yes
+    state: started
+  notify:
+    - restart mantl-shibboleth
+
+
